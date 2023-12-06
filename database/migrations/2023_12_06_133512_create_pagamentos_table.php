@@ -9,10 +9,12 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('clientes', function (Blueprint $table) {
+        Schema::create('pagamentos', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
-            $table->float('deve')->nullable();
+            $table->string('descricao_pagamento');
+            $table->float('valor_pagamento');
+            $table->date('data_pagamento');
+            $table->foreignId('cliente_id')->constrained();
             $table->timestamps();
         });
     }
@@ -21,6 +23,6 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('clientes');
+        Schema::dropIfExists('pagamentos');
     }
 };
