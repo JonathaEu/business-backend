@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\EmprestimosController;
+use App\Http\Controllers\InvestimentosController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::apiResource('/clientes', ClientesController::class);
+Route::apiResource('/emprestimos', EmprestimosController::class);
+Route::apiResource('/investimentos', InvestimentosController::class);

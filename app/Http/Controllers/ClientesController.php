@@ -17,7 +17,7 @@ class ClientesController extends Controller
             $clientes = Clientes::all();
             return response()->json(['status' => true, 'clientes' => $clientes], 200);
         } catch (Exception $e) {
-            return response()->json(['status' => false, 'erro' => $e->getMessage()], 200);
+            return response()->json(['status' => false, 'erro' => $e->getMessage()], 500);
         }
     }
 
@@ -35,7 +35,8 @@ class ClientesController extends Controller
     public function store(Request $request)
     {
         $cliente_nome = $request->nome;
-        $cliente_deve = str_replace(',', '.', $request->input('deve'));;
+        $cliente_deve = str_replace(',', '.', $request->input('deve'));
+        ;
 
         try {
             Clientes::create([
@@ -63,7 +64,8 @@ class ClientesController extends Controller
     public function update(Request $request, Clientes $clientes, $id)
     {
         $cliente_nome = $request->nome;
-        $cliente_deve = str_replace(',', '.', $request->input('deve'));;
+        $cliente_deve = str_replace(',', '.', $request->input('deve'));
+        ;
 
         try {
             $clientes->where('id', $id)
