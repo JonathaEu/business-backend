@@ -35,7 +35,8 @@ class ClientesController extends Controller
     public function store(Request $request)
     {
         $cliente_nome = $request->nome;
-        $cliente_deve = $request->deve;
+        $cliente_deve = str_replace(',', '.', $request->input('deve'));;
+
         try {
             Clientes::create([
                 'nome' => $cliente_nome,
@@ -56,26 +57,37 @@ class ClientesController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Clientes $clientes)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Clientes $clientes)
+    public function update(Request $request, Clientes $clientes, $id)
     {
-        //
+        $cliente_nome = $request->nome;
+        $cliente_deve = str_replace(',', '.', $request->input('deve'));;
+
+        try {
+            $clientes->where('id', $id)
+                ->update([
+                    'nome' => $cliente_nome,
+                    'deve' => $cliente_deve,
+                ]);
+            return response()->json(['status' => true, 'mensagem' => 'Cliente Atualizado Com Sucesso'], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => false, 'erro' => $e->getMessage()], 500);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Clientes $clientes)
+    public function destroy(Clientes $clientes, $id)
     {
-        //
+        try {
+            $clientes->where('id', $id)
+                ->delete();
+            return response()->json(['status' => true, 'mensagem' => 'Cliente Removido Com Sucesso'], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => false, 'erro' => $e->getMessage()], 500);
+        }
     }
 }
