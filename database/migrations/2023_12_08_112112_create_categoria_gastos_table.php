@@ -10,12 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('gastos', function (Blueprint $table) {
+        Schema::create('categoria_gastos', function (Blueprint $table) {
             $table->id();
-            $table->string('descricao_gasto');
-            $table->float('valor_gasto');
-            $table->date('data_gasto');
-            $table->foreignId('categoria_gastos_id')->constrained();
+            $table->string('categoria_gastos');
             $table->timestamps();
         });
     }
@@ -25,6 +22,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('gastos');
+        Schema::dropIfExists('categoria_gastos');
     }
 };
