@@ -12,7 +12,10 @@ class Investimentos extends Model
     protected $fillable = [
         'descricao_investimento',
         'valor_investimento',
-        'data_investimento',
+        'data_aporte',
+        'nome_investimento',
+        'users_id',
+        'categoria_investimento_id',
     ];
 
     protected $table = 'investimentos';

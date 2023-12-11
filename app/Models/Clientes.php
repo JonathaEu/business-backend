@@ -11,7 +11,8 @@ class Clientes extends Model
 
     protected $fillable = [
         'nome',
-        'deve'
+        'divida',
+        'users_id'
     ];
 
     protected $table = 'clientes';

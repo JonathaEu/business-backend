@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Emprestimos extends Model {
+class Emprestimos extends Model
+{
     use HasFactory;
 
     protected $fillable = [
@@ -13,7 +14,10 @@ class Emprestimos extends Model {
         'valor_emprestimo',
         'data_emprestimo',
         'previsao_pagamento',
-        'cliente_id'
+        'pago',
+        'metodo_emprestimo',
+        'cliente_id',
+        'users_id',
     ];
 
     protected $table = 'emprestimos';
