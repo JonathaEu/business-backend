@@ -30,3 +30,25 @@ Route::get('/teste', function () {
         return response()->json(['status' => false, 'Erro' => $e], 500);
     }
 });
+
+Route::post('/login', function (Request $request) {
+    $credentials = $request->only(['email', 'password']);
+    // dd($credentials);
+    if (!$token = auth()->attempt($credentials)) {
+        abort(401, 'Unauthorized');
+    }
+
+    return response()->json([
+        'data' => [
+            'user' => auth()->user(),
+            'token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 120
+        ]
+    ], 200);
+});
+
+Route::post('/logout', function () {
+    auth()->logout();
+    response()->json(['message' => 'Usuário desautenticado com sucesso']);
+});
