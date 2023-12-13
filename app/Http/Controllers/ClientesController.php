@@ -15,7 +15,8 @@ class ClientesController extends Controller
     {
         try {
             $clientes = Clientes::all();
-            return response()->json(['status' => true, 'clientes' => $clientes], 200);
+            $users_id = auth()->user()->email;
+            return response()->json(['status' => true, 'clientes' => $clientes, 'email' => $users_id], 200);
         } catch (Exception $e) {
             return response()->json(['status' => false, 'erro' => $e->getMessage()], 500);
         }
@@ -35,13 +36,14 @@ class ClientesController extends Controller
     public function store(Request $request)
     {
         $cliente_nome = $request->nome;
-        $cliente_deve = str_replace(',', '.', $request->input('deve'));
-        ;
+        $cliente_divida = str_replace(',', '.', $request->input('divida'));
+        $users_id = $request->users_id;
 
         try {
             Clientes::create([
                 'nome' => $cliente_nome,
-                'deve' => $cliente_deve,
+                'divida' => $cliente_divida,
+                'users_id' => $users_id
             ]);
             return response()->json(['status' => true, 'mensagem' => 'Cliente cadastrado com sucesso'], 200);
         } catch (Exception $e) {

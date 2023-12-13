@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\EmprestimosController;
 use App\Http\Controllers\InvestimentosController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,9 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('/clientes', ClientesController::class);
 Route::apiResource('/emprestimos', EmprestimosController::class);
 Route::apiResource('/investimentos', InvestimentosController::class);
+Route::apiResource('/users', UsersController::class);
+
+
 Route::get('/teste', function () {
     try {
         $teste = DB::table('teste')->get();
@@ -35,16 +39,15 @@ Route::post('/login', function (Request $request) {
     $credentials = $request->only(['email', 'password']);
     // dd($credentials);
     if (!$token = auth()->attempt($credentials)) {
-        abort(401, 'Unauthorized');
+        abort(401, 'Credenciais Erradas, Cheque os Campos Novamente');
     }
 
     return response()->json([
-        'data' => [
-            'user' => auth()->user(),
-            'token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 120
-        ]
+        'user' => auth()->user(),
+        'token' => $token,
+        'token_type' => 'bearer',
+        'expires_in' => auth()->factory()->getTTL() * 120,
+        'mensagem' => 'Autenticação Bem Sucedida'
     ], 200);
 });
 

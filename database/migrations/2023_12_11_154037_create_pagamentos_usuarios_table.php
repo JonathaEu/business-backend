@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->date('data_pagamento');
             $table->enum('metodo_pagamento', ['cartão de crédito', 'cartão de débito', 'pix', 'dinheiro']);
             $table->double('juros', 11, 2);
-            $table->int('numero_parcela');
+            $table->integer('numero_parcela');
             $table->timestamps();
         });
     }

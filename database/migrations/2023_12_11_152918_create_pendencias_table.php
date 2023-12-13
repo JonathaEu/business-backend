@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('quem_recebe');
             $table->date('data_pendencia');
             $table->string('descricao_pendencia');
-            $table->int('parcelas');
+            $table->integer('parcelas');
             $table->foreignId('users_id')->constrained();
             $table->foreignId('categoria_gastos_id')->constrained();
             $table->timestamps();
