@@ -16,4 +16,9 @@ class Clientes extends Model
     ];
 
     protected $table = 'clientes';
+
+    public function emprestimos()
+    {
+        return $this->belongsToMany('App\Models\Emprestimos', 'emprestimos_id');
+    }
 }

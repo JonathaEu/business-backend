@@ -12,12 +12,12 @@ return new class extends Migration {
     {
         Schema::create('investimentos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('categoria_investimentos_id')->constrained();
+            $table->foreignId('users_id')->constrained();
             $table->string('nome_investimento');
             $table->double('valor_investimento', 11, 2);
             $table->string('descricao_investimento');
             $table->date('data_aporte');
-            $table->foreignId('categoria_investimentos_id')->constrained();
-            $table->foreignId('users_id')->constrained();
             $table->timestamps();
         });
     }

@@ -12,13 +12,13 @@ return new class extends Migration {
     {
         Schema::create('pagamentos_clientes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('emprestimos_id')->constrained();
+            $table->foreignId('users_id')->constrained();
             $table->string('descricao');
             $table->double('valor_pagamento', 11, 2);
             $table->boolean('debito_total');
             $table->date('data_pagamento');
             $table->enum('metodo_pagamento', ['cartão de crédito', 'cartão de débito', 'pix', 'dinheiro']);
-            $table->foreignId('emprestimos_id')->constrained();
-            $table->foreignId('users_id')->constrained();
             $table->timestamps();
         });
     }

@@ -12,13 +12,14 @@ return new class extends Migration {
     {
         Schema::create('emprestimos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('clientes_id')->constrained();
+            $table->foreignId('users_id')->constrained();
             $table->date('data_emprestimo');
-            $table->date('previsa_pagamento');
+            $table->double('valor_emprestimo', 11, 2);
             $table->boolean('pago');
             $table->string('descricao_emprestimo');
             $table->enum('metodo_emprestimo', ['cartão de crédito', 'cartão de débito', 'dinheiro', 'pix']);
-            $table->foreignId('clientes_id')->constrained();
-            $table->foreignId('users_id')->constrained();
+            $table->date('previsao_pagamento');
             $table->timestamps();
         });
     }

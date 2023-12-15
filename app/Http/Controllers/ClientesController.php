@@ -11,12 +11,27 @@ class ClientesController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // private int $id;
+
+    // public function __construct($id = null)
+    // {
+    //     $this->id = auth()->user()->id;
+    // }
+    private int $user_id;
+
+    public function getID()
+    {
+        // Atribua o ID do usuário autenticado à propriedade user_id.
+        $this->users_id = auth()->user()->id;
+    }
     public function index()
     {
         try {
-            $clientes = Clientes::all();
-            $users_id = auth()->user()->email;
-            return response()->json(['status' => true, 'clientes' => $clientes, 'email' => $users_id], 200);
+            $this->getID();
+            $clientes = Clientes::where('users_id', $this->user_id)
+                ->get();
+            return response()->json(['status' => true, 'clientes' => $clientes], 200);
+
         } catch (Exception $e) {
             return response()->json(['status' => false, 'erro' => $e->getMessage()], 500);
         }

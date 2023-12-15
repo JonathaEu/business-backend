@@ -16,9 +16,14 @@ class Emprestimos extends Model
         'previsao_pagamento',
         'pago',
         'metodo_emprestimo',
-        'cliente_id',
+        'clientes_id',
         'users_id',
     ];
 
     protected $table = 'emprestimos';
+
+    public function clientes()
+    {
+        return $this->hasOne('App\Models\Clientes', 'id', 'clientes_id');
+    }
 }

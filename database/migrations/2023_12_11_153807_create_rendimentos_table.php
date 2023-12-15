@@ -12,9 +12,9 @@ return new class extends Migration {
     {
         Schema::create('rendimentos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('investimentos_id')->constrained();
             $table->double('valor_rendimento', 11, 2);
             $table->date('data_rendimento');
-            $table->foreignId('investimentos_id')->constrained();
             $table->timestamps();
         });
     }

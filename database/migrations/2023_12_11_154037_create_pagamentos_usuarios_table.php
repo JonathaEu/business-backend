@@ -12,7 +12,9 @@ return new class extends Migration {
     {
         Schema::create('pagamentos_usuarios', function (Blueprint $table) {
             $table->id();
-            $table->double('valor', 11, 2);
+            $table->foreignId('users_id')->constrained();
+            $table->foreignId('pendencias_id')->constrained();
+            $table->double('valor_pagamento', 11, 2);
             $table->boolean('debito_total');
             $table->string('descricao_pagamento');
             $table->date('data_pagamento');
