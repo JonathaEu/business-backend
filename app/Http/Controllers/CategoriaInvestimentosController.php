@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CategoriaGastos;
+use App\Models\CategoriaInvestimentos;
 use Exception;
 use Illuminate\Http\Request;
 
-class CategoriaGastosController extends Controller
+class CategoriaInvestimentosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,32 +22,33 @@ class CategoriaGastosController extends Controller
     {
         $this->getID();
         try {
-            $categoria_gastos = CategoriaGastos::where('users_id', $this->users_id)
+            $categoria_investimentos = CategoriaInvestimentos::where('users_id', $this->users_id)
                 ->get();
-            return response()->json(['status' => true, 'categoria_gastos' => $categoria_gastos], 200);
+            return response()->json([
+                'status' => true,
+                'categoria_investimentos' => $categoria_investimentos
+            ], 200);
         } catch (Exception $e) {
             return response()->json(['status' => false, 'erro' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
         try {
-            $categoriaGastos = $request->categoria_gastos;
+            $categoriaInvestimentos = $request->categoria_investimentos;
 
-            CategoriaGastos::create([
-                'categoria_gastos' => $categoriaGastos,
+            CategoriaInvestimentos::create([
+                'categoria_investimentos' => $categoriaInvestimentos,
                 'users_id' => $this->users_id,
             ]);
             return response()->json([
                 'status' => true,
-                'mensagem' => 'Tipo de Gasto Cadastrado com Sucesso'
+                'mensagem' => 'Categoria de Investimento Cadastrada com Sucesso'
             ], 200);
         } catch (Exception $e) {
             return response()->json([
@@ -57,15 +58,19 @@ class CategoriaGastosController extends Controller
             ], 500);
         }
     }
+
     /**
      * Display the specified resource.
      */
-    public function show(CategoriaGastos $categoriaGastos)
+    public function show(CategoriaInvestimentos $categoriaInvestimentos)
     {
         //
     }
 
-    public function update(Request $request, CategoriaGastos $categoriaGastos)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function update(Request $request, CategoriaInvestimentos $categoriaInvestimentos)
     {
         //
     }
@@ -73,14 +78,8 @@ class CategoriaGastosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(CategoriaInvestimentos $categoriaInvestimentos)
     {
-        try {
-            CategoriaGastos::where('id', $id)
-                ->delete();
-            return response()->json(['status' => true, 'mensagem' => 'Categoria de Gasto Removida Com Sucesso'], 200);
-        } catch (Exception $e) {
-            return response()->json(['status' => false, 'erro' => $e->getMessage()], 500);
-        }
+        //
     }
 }

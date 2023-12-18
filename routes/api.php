@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\EmprestimosController;
 use App\Http\Controllers\InvestimentosController;
+use App\Http\Controllers\PagamentosClientesController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,8 +21,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::apiResource('/clientes', ClientesController::class);
+
 Route::apiResource('/emprestimos', EmprestimosController::class);
+Route::get('/emprestimos-abertos', [EmprestimosController::class, 'EmprestimosEmAberto']);
+
 Route::apiResource('/investimentos', InvestimentosController::class);
+
+Route::apiResource('/pagamentos-clientes', PagamentosClientesController::class);
+
 Route::apiResource('/users', UsersController::class);
 
 

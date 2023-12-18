@@ -12,6 +12,7 @@ class PagamentosClientes extends Model
     protected $fillable = [
         'emprestimos_id',
         'users_id',
+        'clientes_id',
         'descricao',
         'valor_pagamento',
         'debito_total',
@@ -20,4 +21,9 @@ class PagamentosClientes extends Model
     ];
 
     protected $table = 'pagamentos_clientes';
+
+    public function clientes()
+    {
+        return $this->hasOne('App\Models\Clientes', 'id', 'clientes_id');
+    }
 }

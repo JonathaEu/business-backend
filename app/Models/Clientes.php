@@ -21,4 +21,9 @@ class Clientes extends Model
     {
         return $this->belongsToMany('App\Models\Emprestimos', 'emprestimos_id');
     }
+
+    public function pagamentoClientes()
+    {
+        return $this->belongsToMany('App\Models\PagamentosClientes', 'pagamentos_clientes_id');
+    }
 }

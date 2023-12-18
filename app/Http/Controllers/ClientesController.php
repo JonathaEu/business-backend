@@ -17,7 +17,7 @@ class ClientesController extends Controller
     // {
     //     $this->id = auth()->user()->id;
     // }
-    private int $user_id;
+    private int $users_id;
 
     public function getID()
     {
@@ -28,10 +28,9 @@ class ClientesController extends Controller
     {
         try {
             $this->getID();
-            $clientes = Clientes::where('users_id', $this->user_id)
+            $clientes = Clientes::where('users_id', $this->users_id)
                 ->get();
             return response()->json(['status' => true, 'clientes' => $clientes], 200);
-
         } catch (Exception $e) {
             return response()->json(['status' => false, 'erro' => $e->getMessage()], 500);
         }
@@ -81,8 +80,7 @@ class ClientesController extends Controller
     public function update(Request $request, Clientes $clientes, $id)
     {
         $cliente_nome = $request->nome;
-        $cliente_deve = str_replace(',', '.', $request->input('deve'));
-        ;
+        $cliente_deve = str_replace(',', '.', $request->input('deve'));;
 
         try {
             $clientes->where('id', $id)

@@ -22,35 +22,13 @@ class PagamentosClientesController extends Controller
     {
         try {
             $this->getID();
-            $emprestimos_id = PagamentosClientes::where('users_id', $this->users_id)
-                ->pluck('emprestimos_id');
-            $clientes_id = Emprestimos::where('id', $emprestimos_id)
-                ->pluck('clientes_id');
-            $PagamentosClientes = PagamentosClientes::where('users_id', $this->users_id)
-                ->join('clientes', 'clientes.id', '=', $clientes_id)
-                ->select(
-                    'clientes.nome',
-                    'pagamentos_clientes.emprestimos_id',
-                    'pagamentos_clientes.descricao',
-                    'pagamentos_clientes.valor_pagamento',
-                    'pagamentos_clientes.debito_total',
-                    'pagamentos_clientes.data_pagamento',
-                    'pagamentos_clientes.metodo_pagamento',
-                )
-                ->groupBy(
-                    'clientes.nome',
-                    'pagamentos_clientes.emprestimos_id',
-                    'pagamentos_clientes.descricao',
-                    'pagamentos_clientes.valor_pagamento',
-                    'pagamentos_clientes.debito_total',
-                    'pagamentos_clientes.data_pagamento',
-                    'pagamentos_clientes.metodo_pagamento',
-                )
-                ->get();
 
+            $pagamentosClientes = PagamentosClientes::where('users_id', $this->users_id)
+                ->with('clientes')
+                ->get();
             return response()->json([
                 'status' => true,
-                'pagamento_clientes' => $PagamentosClientes,
+                'pagamento_clientes' => $pagamentosClientes,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -69,6 +47,7 @@ class PagamentosClientesController extends Controller
         try {
             $this->getID();
             $emprestimos_id = $request->emprestimos_id;
+            $clientes_id = $request->clientes_id;
             $descricao = $request->descricao;
             $valor_pagamento = $request->valor_pagamento;
             $debito_total = $request->debito_total;
@@ -78,6 +57,7 @@ class PagamentosClientesController extends Controller
             PagamentosClientes::create([
                 'emprestimos_id' => $emprestimos_id,
                 'users_id' => $this->users_id,
+                'clientes_id' => $clientes_id,
                 'descricao' => $descricao,
                 'valor_pagamento' => $valor_pagamento,
                 'debito_total' => $debito_total,
@@ -116,6 +96,7 @@ class PagamentosClientesController extends Controller
             $this->getID();
             $emprestimos_id = $request->emprestimos_id;
             $descricao = $request->descricao;
+            $clientes_id = $request->clientes_id;
             $valor_pagamento = $request->valor_pagamento;
             $debito_total = $request->debito_total;
             $data_pagamento = $request->data_pagamento;
@@ -127,6 +108,7 @@ class PagamentosClientesController extends Controller
                 ->update([
                     'emprestimos_id' => $emprestimos_id,
                     'users_id' => $this->users_id,
+                    'clientes_id' => $clientes_id,
                     'descricao' => $descricao,
                     'valor_pagamento' => $valor_pagamento,
                     'debito_total' => $debito_total,
