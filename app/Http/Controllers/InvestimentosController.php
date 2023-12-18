@@ -23,7 +23,10 @@ class InvestimentosController extends Controller
     {
         try {
             $this->getID();
-            $investimentos = Investimentos::where('users_id', $this->users_id);
+            $investimentos = Investimentos::where('users_id', $this->users_id)
+                ->with('categoriaInvestimentos')
+                ->with('rendimentos')
+                ->get();
             return response()->json(['status' => true, 'investimentos' => $investimentos], 200);
         } catch (Exception $e) {
             return response()->json(['status' => false, 'erro' => $e->getMessage()], 500);
@@ -39,6 +42,7 @@ class InvestimentosController extends Controller
     public function store(Request $request)
     {
         try {
+            $this->getID();
             $descricao = $request->descricao;
             $valor = str_replace(',', '.', $request->valor);
             $data = $request->data;
@@ -47,7 +51,7 @@ class InvestimentosController extends Controller
 
             Investimentos::create([
                 'descricao_investimento' => $descricao,
-                'categoria_investimento' => $categoria_investimento,
+                'categoria_investimentos_id' => $categoria_investimento,
                 'users_id' => $this->users_id,
                 'nome_investimento' => $nome_investimento,
                 'valor_investimento' => $valor,
@@ -74,6 +78,7 @@ class InvestimentosController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $this->getID();
             $descricao = $request->descricao;
             $valor = str_replace(',', '.', $request->valor);
             $data = $request->data;
@@ -85,7 +90,7 @@ class InvestimentosController extends Controller
             $investimentos->where('id', $id)
                 ->update([
                     'descricao_investimento' => $descricao,
-                    'categoria_investimento' => $categoria_investimento,
+                    'categoria_investimentos_id' => $categoria_investimento,
                     'users_id' => $this->users_id,
                     'nome_investimento' => $nome_investimento,
                     'valor_investimento' => $valor,

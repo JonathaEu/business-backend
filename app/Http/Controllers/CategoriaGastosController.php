@@ -39,6 +39,7 @@ class CategoriaGastosController extends Controller
     public function store(Request $request)
     {
         try {
+            $this->getID();
             $categoriaGastos = $request->categoria_gastos;
 
             CategoriaGastos::create([
@@ -65,9 +66,28 @@ class CategoriaGastosController extends Controller
         //
     }
 
-    public function update(Request $request, CategoriaGastos $categoriaGastos)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $this->getID();
+            $categoriaGastos = $request->categoria_gastos;
+
+            CategoriaGastos::where('id', $id)
+                ->update([
+                    'categoria_gastos' => $categoriaGastos,
+                    'users_id' => $this->users_id,
+                ]);
+            return response()->json([
+                'status' => true,
+                'mensagem' => 'Tipo de Gasto Atualizado com Sucesso'
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'mensagem' => 'Erro no servidor',
+                'erro' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

@@ -15,4 +15,9 @@ class CategoriaGastos extends Model
     ];
 
     protected $table = 'categoria_gastos';
+
+    public function pendencias()
+    {
+        return $this->hasOne(Pendencias::class);
+    }
 }

@@ -15,8 +15,18 @@ class Investimentos extends Model
         'data_aporte',
         'nome_investimento',
         'users_id',
-        'categoria_investimento_id',
+        'categoria_investimentos_id',
     ];
 
     protected $table = 'investimentos';
+
+    public function rendimentos()
+    {
+        return $this->hasMany(Rendimentos::class);
+    }
+
+    public function categoriaInvestimentos()
+    {
+        return $this->belongsTo(CategoriaInvestimentos::class);
+    }
 }

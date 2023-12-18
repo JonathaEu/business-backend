@@ -19,11 +19,11 @@ class Clientes extends Model
 
     public function emprestimos()
     {
-        return $this->belongsToMany('App\Models\Emprestimos', 'emprestimos_id');
+        return $this->hasMany(Emprestimos::class);
     }
 
     public function pagamentoClientes()
     {
-        return $this->belongsToMany('App\Models\PagamentosClientes', 'pagamentos_clientes_id');
+        return $this->hasMany(PagamentosClientes::class);
     }
 }

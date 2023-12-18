@@ -11,12 +11,6 @@ class ClientesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    // private int $id;
-
-    // public function __construct($id = null)
-    // {
-    //     $this->id = auth()->user()->id;
-    // }
     private int $users_id;
 
     public function getID()
@@ -34,14 +28,6 @@ class ClientesController extends Controller
         } catch (Exception $e) {
             return response()->json(['status' => false, 'erro' => $e->getMessage()], 500);
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -80,13 +66,14 @@ class ClientesController extends Controller
     public function update(Request $request, Clientes $clientes, $id)
     {
         $cliente_nome = $request->nome;
-        $cliente_deve = str_replace(',', '.', $request->input('deve'));;
+        $cliente_deve = str_replace(',', '.', $request->input('divida'));
+        ;
 
         try {
             $clientes->where('id', $id)
                 ->update([
                     'nome' => $cliente_nome,
-                    'deve' => $cliente_deve,
+                    'divida' => $cliente_deve,
                 ]);
             return response()->json(['status' => true, 'mensagem' => 'Cliente Atualizado Com Sucesso'], 200);
         } catch (Exception $e) {

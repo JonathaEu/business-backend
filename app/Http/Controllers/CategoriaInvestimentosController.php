@@ -40,6 +40,7 @@ class CategoriaInvestimentosController extends Controller
     public function store(Request $request)
     {
         try {
+            $this->getID();
             $categoriaInvestimentos = $request->categoria_investimentos;
 
             CategoriaInvestimentos::create([
@@ -70,16 +71,47 @@ class CategoriaInvestimentosController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function update(Request $request, CategoriaInvestimentos $categoriaInvestimentos)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $this->getID();
+            $categoriaInvestimentos = $request->categoria_investimentos;
+
+            CategoriaInvestimentos::where('id', $id)
+                ->update([
+                    'categoria_investimentos' => $categoriaInvestimentos,
+                    'users_id' => $this->users_id,
+                ]);
+            return response()->json([
+                'status' => true,
+                'mensagem' => 'Categoria de Investimento Atualizado com Sucesso'
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'mensagem' => 'Erro no servidor',
+                'erro' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CategoriaInvestimentos $categoriaInvestimentos)
+    public function destroy($id)
     {
-        //
+        try {
+            CategoriaInvestimentos::where('id', $id)->delete();
+            return response()->json([
+                'status' => true,
+                'mensagem' => 'Categoria de Investimento Excluída com Sucesso'
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'mensagem' => 'Falha no Servidor',
+                'erro' => $e->getMessage()
+            ], 500);
+        }
     }
 }

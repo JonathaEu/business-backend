@@ -5,25 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PagamentosClientes extends Model
+class PagamentosUsuarios extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'emprestimos_id',
         'users_id',
-        'clientes_id',
-        'descricao',
+        'pendencias_id',
         'valor_pagamento',
         'debito_total',
+        'descricao_pagamento',
         'data_pagamento',
         'metodo_pagamento',
+        'juros',
+        'numero_parcela'
     ];
 
-    protected $table = 'pagamentos_clientes';
+    protected $table = 'pagamentos_usuarios';
 
-    public function clientes()
+    public function pendencias()
     {
-        return $this->belongsTo(Clientes::class);
+        return $this->belongsTo(Pendencias::class);
     }
 }

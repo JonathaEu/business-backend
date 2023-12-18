@@ -24,6 +24,6 @@ class Emprestimos extends Model
 
     public function clientes()
     {
-        return $this->hasOne('App\Models\Clientes', 'id', 'clientes_id');
+        return $this->belongsTo(Clientes::class);
     }
 }

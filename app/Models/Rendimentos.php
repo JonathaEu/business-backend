@@ -5,19 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CategoriaInvestimentos extends Model
+class Rendimentos extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'categoria_investimentos',
-        'users_id'
+        'investimentos_id',
+        'valor_rendimento',
+        'data_rendimento'
     ];
 
-    protected $table = 'categoria_investimentos';
+    protected $table = 'rendimentos';
 
     public function investimentos()
     {
-        return $this->hasOne(Investimentos::class);
+        return $this->belongsTo(Investimentos::class);
     }
 }
