@@ -25,7 +25,7 @@ class Investimentos extends Model
         return $this->hasMany(Rendimentos::class);
     }
 
-    public function categoriaInvestimentos()
+    public function categoria_investimentos()
     {
         return $this->belongsTo(CategoriaInvestimentos::class);
     }

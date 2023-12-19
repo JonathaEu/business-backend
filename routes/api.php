@@ -56,6 +56,31 @@ Route::get('/teste', function () {
     }
 });
 
+Route::get('/me', function () {
+    try {
+        return response()->json(auth()->user());
+    } catch (Exception $e) {
+        return response()->json(['erro' => 'Usuário Não encontrado, por favor, faça login novamente.'], 500);
+    }
+});
+
+Route::post('/logout', function () {
+    try {
+        auth()->logout();
+
+        return response()->json([
+            'status' => true,
+            'mensagem' => 'Desautenticou Com Sucesso!'
+        ], 200);
+    } catch (Exception $e) {
+        return response()->json([
+            'status' => false,
+            'mensagem' => 'erro no servidor',
+            'erro' => $e->getMessage()
+        ], 500);
+    }
+});
+
 Route::post('/login', function (Request $request) {
     $credentials = $request->only(['email', 'password']);
     // dd($credentials);

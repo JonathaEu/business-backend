@@ -24,7 +24,7 @@ class InvestimentosController extends Controller
         try {
             $this->getID();
             $investimentos = Investimentos::where('users_id', $this->users_id)
-                ->with('categoriaInvestimentos')
+                ->with('categoria_investimentos')
                 ->with('rendimentos')
                 ->get();
             return response()->json(['status' => true, 'investimentos' => $investimentos], 200);
