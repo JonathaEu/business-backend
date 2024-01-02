@@ -18,6 +18,7 @@ class PagamentosClientes extends Model
         'debito_total',
         'data_pagamento',
         'metodo_pagamento',
+        'numero_parcela'
     ];
 
     protected $table = 'pagamentos_clientes';

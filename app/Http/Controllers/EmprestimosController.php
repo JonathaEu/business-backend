@@ -29,7 +29,6 @@ class EmprestimosController extends Controller
         } catch (Exception $e) {
             return response()->json(['status' => false, 'erro' => $e->getMessage()], 500);
         }
-
     }
 
     public function EmprestimosEmAberto()
@@ -54,9 +53,31 @@ class EmprestimosController extends Controller
         }
     }
 
+    public function EmprestimosEmAbertoEspecifico($cliente_id)
+    {
+        try {
+            $this->getID();
+            $emprestimoAberto = Emprestimos::where('users_id', $this->users_id)
+                ->where('clientes_id', $cliente_id)
+                ->where('pago', 0)
+                ->with('clientes')
+                ->get();
+
+            return response()->json([
+                'status' => true,
+                'emprestimosAbertosEspecificos' => $emprestimoAberto
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'mensagem' => 'erro no servidor',
+                'erro' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -81,11 +102,9 @@ class EmprestimosController extends Controller
                 'users_id' => $this->users_id,
             ]);
             return response()->json(['status' => true, 'mensagem' => 'Emprestimo Cadastrado Com Sucesso'], 200);
-
         } catch (Exception $e) {
             return response()->json(['status' => false, 'erro' => $e->getMessage()], 500);
         }
-
     }
 
     /**
@@ -130,7 +149,6 @@ class EmprestimosController extends Controller
                 'status' => true,
                 'mensagem' => 'Empréstimo Atualizado Com Sucesso!',
             ], 200);
-
         } catch (Exception $e) {
             return response()->json([
                 'status' => false,

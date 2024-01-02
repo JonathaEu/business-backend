@@ -28,7 +28,7 @@ class PagamentosClientesController extends Controller
                 ->get();
             return response()->json([
                 'status' => true,
-                'pagamento_clientes' => $pagamentosClientes,
+                'pagamentos_clientes' => $pagamentosClientes,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -54,16 +54,26 @@ class PagamentosClientesController extends Controller
             $data_pagamento = $request->data_pagamento;
             $metodo_pagamento = $request->metodo_pagamento;
 
-            PagamentosClientes::create([
-                'emprestimos_id' => $emprestimos_id,
-                'users_id' => $this->users_id,
-                'clientes_id' => $clientes_id,
-                'descricao' => $descricao,
-                'valor_pagamento' => $valor_pagamento,
-                'debito_total' => $debito_total,
-                'data_pagamento' => $data_pagamento,
-                'metodo_pagamento' => $metodo_pagamento,
-            ]);
+            if (
+                PagamentosClientes::create([
+                    'emprestimos_id' => $emprestimos_id,
+                    'users_id' => $this->users_id,
+                    'clientes_id' => $clientes_id,
+                    'descricao' => $descricao,
+                    'valor_pagamento' => $valor_pagamento,
+                    'debito_total' => $debito_total,
+                    'data_pagamento' => $data_pagamento,
+                    'metodo_pagamento' => $metodo_pagamento,
+                    'numero_parcela' => $request->numero_parcela,
+
+                ])
+                && $debito_total == 1
+            ) {
+                Emprestimos::where('id', $emprestimos_id)
+                    ->update([
+                        "pago" => 1
+                    ]);
+            }
 
             return response()->json([
                 'status' => true,
@@ -114,6 +124,7 @@ class PagamentosClientesController extends Controller
                     'debito_total' => $debito_total,
                     'data_pagamento' => $data_pagamento,
                     'metodo_pagamento' => $metodo_pagamento,
+                    'numero_parcela' => $request->numero_parcela,
                 ]);
 
             return response()->json([
