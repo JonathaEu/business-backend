@@ -23,10 +23,6 @@ class CategoriaInvestimentosController extends Controller
         $this->getID();
         try {
             $categoria_investimentos = CategoriaInvestimentos::where('users_id', $this->users_id)
-                ->select(
-                    'id as value',
-                    'categoria_investimentos as label'
-                )
                 ->get();
             return response()->json([
                 'status' => true,
