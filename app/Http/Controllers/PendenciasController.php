@@ -34,8 +34,31 @@ class PendenciasController extends Controller
             return response()->json([
                 'status' => false,
                 'mensagem' => 'Erro no servidor',
-                'erro' => $e->getMessage()
-                , 500]);
+                'erro' => $e->getMessage(), 500
+            ]);
+        }
+    }
+
+    public function PendenciasEmAberto()
+    {
+        try {
+            $this->getID();
+            $pendencias = Pendencias::where('users_id', $this->users_id)
+                ->where('debito_total', 0)
+                ->with('categoriaGastos')
+                ->get();
+
+            return response()->json([
+                'status' => true,
+                'pendenciasEmAberto' => $pendencias
+
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'mensagem' => 'Erro no servidor',
+                'erro' => $e->getMessage(), 500
+            ]);
         }
     }
 
@@ -61,6 +84,7 @@ class PendenciasController extends Controller
                 'descricao_pendencia' => $descricao_pendencia,
                 'parcelas' => $parcelas,
                 'users_id' => $this->users_id,
+                'debito_total' => 0,
             ]);
 
             return response()->json([
@@ -120,7 +144,6 @@ class PendenciasController extends Controller
                 'erro' => $e->getMessage()
             ], 500);
         }
-
     }
 
     /**
@@ -135,7 +158,6 @@ class PendenciasController extends Controller
                 'status' => true,
                 'mensagem' => "Pendecia Removida Com Sucesso"
             ], 200);
-
         } catch (Exception $e) {
             return response()->json([
                 'status' => false,

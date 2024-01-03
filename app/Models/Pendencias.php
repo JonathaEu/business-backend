@@ -16,7 +16,8 @@ class Pendencias extends Model
         'quem_recebe',
         'data_pendencia',
         'descricao_pendencia',
-        'parcelas'
+        'parcelas',
+        'debito_total'
     ];
 
     protected $table = 'pendencias';

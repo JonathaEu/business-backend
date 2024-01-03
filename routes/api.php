@@ -25,32 +25,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+// CATEGORIA INVESTIMENTOS 
 Route::apiResource('/categoria-investimentos', CategoriaInvestimentosController::class);
 Route::apiResource('/categoria-gastos', CategoriaGastosController::class);
-
+// CLIENTES 
 Route::apiResource('/clientes', ClientesController::class);
-
+// EMPRESTIMOS
 Route::apiResource('/emprestimos', EmprestimosController::class);
 Route::get('/emprestimos-abertos', [EmprestimosController::class, 'EmprestimosEmAberto']);
 Route::get('/emprestimos-abertos/{cliente_id}', [EmprestimosController::class, 'EmprestimosEmAbertoEspecifico']);
-
+// INVESTIMENTOS
 Route::apiResource('/investimentos', InvestimentosController::class);
-
+// PENDENCIAS 
 Route::apiResource('/pendencias', PendenciasController::class);
-
+Route::get('/pendencias-em-aberto', [PendenciasController::class, 'PendenciasEmAberto']);
+// PAGAMENTO CLIENTES 
 Route::apiResource('/pagamentos-clientes', PagamentosClientesController::class);
-Route::apiResource('/pagamentos-usuarios', PagamentosUsuariosController::class);
-
+// MEUS PAGAMENTOS
+Route::apiResource('/meus-pagamentos', PagamentosUsuariosController::class);
+// RENDIMENTOS
 Route::apiResource('/rendimentos', RendimentosController::class);
-
+// USUARIOS
 Route::apiResource('/users', UsersController::class);
 
 
 Route::get('/teste', function () {
     try {
         $teste = DB::table('teste')->get();
-
         return response()->json(['status' => true, 'teste' => $teste], 200);
     } catch (Exception $e) {
         return response()->json(['status' => false, 'Erro' => $e], 500);
