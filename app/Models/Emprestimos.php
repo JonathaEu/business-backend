@@ -11,7 +11,8 @@ class Emprestimos extends Model
 
     protected $fillable = [
         'descricao_emprestimo',
-        'valor_emprestimo',
+        'valor_total',
+        'valor_atual',
         'data_emprestimo',
         'previsao_pagamento',
         'pago',

@@ -78,7 +78,8 @@ class PendenciasController extends Controller
 
             Pendencias::create([
                 'categoria_gastos_id' => $categoria_gastos_id,
-                'valor_pendencia' => $valor_pendencia,
+                'valor_total' => $valor_pendencia,
+                'valor_atual' => $valor_pendencia,
                 'quem_recebe' => $quem_recebe,
                 'data_pendencia' => $data_pendencia,
                 'descricao_pendencia' => $descricao_pendencia,

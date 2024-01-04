@@ -12,7 +12,8 @@ class Pendencias extends Model
     protected $fillable = [
         'users_id',
         'categoria_gastos_id',
-        'valor_pendencia',
+        'valor_total',
+        'valor_atual',
         'quem_recebe',
         'data_pendencia',
         'descricao_pendencia',

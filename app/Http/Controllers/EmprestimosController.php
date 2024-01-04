@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Clientes;
 use App\Models\Emprestimos;
 use Exception;
 use Illuminate\Http\Request;
@@ -90,17 +91,22 @@ class EmprestimosController extends Controller
             $clientes_id = $request->clientes_id;
             $metodo_emprestimo = $request->metodo_emprestimo;
             $this->getID();
-
-            Emprestimos::create([
-                'descricao_emprestimo' => $descricao,
-                'valor_emprestimo' => $valor,
-                'data_emprestimo' => $data,
-                'previsao_pagamento' => $previsao_pagamento,
-                'pago' => 0,
-                'metodo_emprestimo' => $metodo_emprestimo,
-                'clientes_id' => $clientes_id,
-                'users_id' => $this->users_id,
-            ]);
+            if (
+                Emprestimos::create([
+                    'descricao_emprestimo' => $descricao,
+                    'valor_total' => $valor,
+                    'valor_atual' => $valor,
+                    'data_emprestimo' => $data,
+                    'previsao_pagamento' => $previsao_pagamento,
+                    'pago' => 0,
+                    'metodo_emprestimo' => $metodo_emprestimo,
+                    'clientes_id' => $clientes_id,
+                    'users_id' => $this->users_id,
+                ])
+            ) {
+                Clientes::where('id', $clientes_id)
+                    ->increment('divida', $valor);
+            }
             return response()->json(['status' => true, 'mensagem' => 'Emprestimo Cadastrado Com Sucesso'], 200);
         } catch (Exception $e) {
             return response()->json(['status' => false, 'erro' => $e->getMessage()], 500);
@@ -138,7 +144,7 @@ class EmprestimosController extends Controller
             $emprestimos->where('id', $id)
                 ->update([
                     'descricao_emprestimo' => $descricao,
-                    'valor_emprestimo' => $valor,
+                    'valor_total' => $valor,
                     'data_emprestimo' => $data,
                     'previsao_pagamento' => $previsao_pagamento,
                     'clientes_id' => $clientes_id,
@@ -164,8 +170,18 @@ class EmprestimosController extends Controller
     public function destroy($id)
     {
         try {
-            Emprestimos::where('id', $id)->delete();
+            $cliente = Emprestimos::where('id', $id)
+                ->pluck('clientes_id');
 
+            $valor_emprestimo = Emprestimos::where('id', $id)
+                ->pluck('valor_total');
+
+            if (
+                Emprestimos::where('id', $id)->delete()
+            ) {
+                Clientes::where('id', $cliente[0])
+                    ->decrement('divida', $valor_emprestimo[0]);
+            }
             return response()->json([
                 'status' => true,
                 'mensagem' => 'Empréstimo Deletado Com Sucesso'

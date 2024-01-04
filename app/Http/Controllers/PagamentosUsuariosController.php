@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PagamentosUsuarios;
+use App\Models\Pendencias;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -47,18 +48,29 @@ class PagamentosUsuariosController extends Controller
         try {
             $this->getID();
 
-            PagamentosUsuarios::create([
-                'users_id' => $this->users_id,
-                'pendencias_id' => $request->pendencias_id,
-                'valor_pagamento' => $request->valor_pagamento,
-                'debito_total' => $request->debito_total,
-                'descricao_pagamento' => $request->descricao_pagamento,
-                'data_pagamento' => $request->data_pagamento,
-                'metodo_pagamento' => $request->metodo_pagamento,
-                'juros' => $request->juros,
-                'numero_parcela' => $request->numero_parcela,
-            ]);
+            $valor_pendencias = Pendencias::where('id', $request->pendencias_id)
+                ->pluck('valor_total');
 
+            $resultado_calc = $valor_pendencias[0] - $request->valor_pagamento;
+
+            if (
+                PagamentosUsuarios::create([
+                    'users_id' => $this->users_id,
+                    'pendencias_id' => $request->pendencias_id,
+                    'valor_pagamento' => $request->valor_pagamento,
+                    'debito_total' => $request->debito_total,
+                    'descricao_pagamento' => $request->descricao_pagamento,
+                    'data_pagamento' => $request->data_pagamento,
+                    'metodo_pagamento' => $request->metodo_pagamento,
+                    'juros' => $request->juros,
+                    'numero_parcela' => $request->numero_parcela,
+                ])
+            ) {
+                Pendencias::where('id', $request->pendencias_id)
+                    ->update([
+                        'valor_atual' => $resultado_calc
+                    ]);
+            }
             return response()->json([
                 'status' => true,
                 'mensagem' => 'Pagamento Registrado Com Sucesso',
@@ -86,8 +98,13 @@ class PagamentosUsuariosController extends Controller
     {
         try {
             $this->getID();
+            $valor_pendencias = Pendencias::where('id', $request->pendencias_id)
+                ->pluck('valor_total');
 
-            PagamentosUsuarios::where('id', $id)
+            $resultado_calc = $valor_pendencias[0] - $request->valor_pagamento;
+
+            if (
+                PagamentosUsuarios::where('id', $id)
                 ->update([
                     'users_id' => $this->users_id,
                     'pendencias_id' => $request->pendencias_id,
@@ -98,7 +115,13 @@ class PagamentosUsuariosController extends Controller
                     'metodo_pagamento' => $request->metodo_pagamento,
                     'juros' => $request->juros,
                     'numero_parcela' => $request->numero_parcela,
-                ]);
+                ])
+            ) {
+                Pendencias::where('id', $request->pendencias_id)
+                    ->update([
+                        'valor_atual' => $resultado_calc
+                    ]);
+            }
 
             return response()->json([
                 'status' => true,

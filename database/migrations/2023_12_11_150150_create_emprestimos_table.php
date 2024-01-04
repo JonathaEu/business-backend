@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -15,7 +16,7 @@ return new class extends Migration {
             $table->foreignId('clientes_id')->constrained();
             $table->foreignId('users_id')->constrained();
             $table->date('data_emprestimo');
-            $table->double('valor_emprestimo', 11, 2);
+            $table->double('valor_total', 11, 2);
             $table->boolean('pago');
             $table->string('descricao_emprestimo');
             $table->enum('metodo_emprestimo', ['cartão de crédito', 'cartão de débito', 'dinheiro', 'pix']);
