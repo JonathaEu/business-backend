@@ -178,6 +178,30 @@ class PagamentosClientesController extends Controller
                     ->update([
                         'valor_atual' => $calc_divida_emprestimo
                     ]);
+            } else if (
+                $pagamentos_clientes->where('id', $id)
+                ->update([
+                    'emprestimos_id' => $emprestimos_id,
+                    'users_id' => $this->users_id,
+                    'clientes_id' => $clientes_id,
+                    'descricao' => $descricao,
+                    'valor_pagamento' => $valor_pagamento,
+                    'debito_total' => $debito_total,
+                    'data_pagamento' => $data_pagamento,
+                    'metodo_pagamento' => $metodo_pagamento,
+                    'numero_parcela' => $request->numero_parcela,
+                ])
+                && $debito_total == 1
+            ) {
+                Clientes::where('id', $clientes_id)
+                    ->update([
+                        'divida' => $calc_divida_cliente
+                    ]);
+                Emprestimos::where('id', $emprestimos_id)
+                    ->update([
+                        'pago' => 1,
+                        'valor_atual' => $calc_divida_emprestimo
+                    ]);
             }
 
             return response()->json([

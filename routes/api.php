@@ -34,6 +34,7 @@ Route::apiResource('/clientes', ClientesController::class);
 Route::apiResource('/emprestimos', EmprestimosController::class);
 Route::get('/emprestimos-abertos', [EmprestimosController::class, 'EmprestimosEmAberto']);
 Route::get('/emprestimos-abertos/{cliente_id}', [EmprestimosController::class, 'EmprestimosEmAbertoEspecifico']);
+Route::get('/emprestimos-especificos/{cliente_id}', [EmprestimosController::class, 'EmprestimosEspecificos']);
 // INVESTIMENTOS
 Route::apiResource('/investimentos', InvestimentosController::class);
 // PENDENCIAS 

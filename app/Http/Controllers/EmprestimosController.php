@@ -54,6 +54,28 @@ class EmprestimosController extends Controller
         }
     }
 
+    public function EmprestimosEspecificos($cliente_id)
+    {
+        try {
+            $this->getID();
+            $emprestimo = Emprestimos::where('users_id', $this->users_id)
+                ->where('clientes_id', $cliente_id)
+                ->with('clientes')
+                ->get();
+
+            return response()->json([
+                'status' => true,
+                'emprestimosEspecificos' => $emprestimo
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'mensagem' => 'erro no servidor',
+                'erro' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function EmprestimosEmAbertoEspecifico($cliente_id)
     {
         try {
