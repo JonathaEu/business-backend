@@ -54,20 +54,24 @@ class ClientesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Clientes $clientes)
+    public function show($id)
     {
-        //
+        try {
+            $clientes = Clientes::where('id', $id)
+                ->get();
+            return response()->json(['clientes' => $clientes], 200);
+        } catch (Exception $e) {
+            return response()->json(['erro' => $e], 500);
+        }
     }
 
-    /**
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Clientes $clientes, $id)
     {
         $cliente_nome = $request->nome;
-        $cliente_deve = str_replace(',', '.', $request->input('divida'));
-        ;
+        $cliente_deve = str_replace(',', '.', $request->input('divida'));;
 
         try {
             $clientes->where('id', $id)
