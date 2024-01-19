@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pendencias;
 use Exception;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Catch_;
 
 class PendenciasController extends Controller
 {
@@ -104,9 +105,16 @@ class PendenciasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pendencias $pendencias)
+    public function show($id)
     {
-        //
+        try {
+            $pendencias = Pendencias::where('id', $id)
+                ->with('categoriaGastos')
+                ->get();
+            return response()->json(['pendencias' => $pendencias], 200);
+        } catch (Exception $e) {
+            return response()->json(['erro' => $e->getMessage()], 500);
+        }
     }
 
     /**

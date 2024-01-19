@@ -127,9 +127,16 @@ class PagamentosClientesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PagamentosClientes $pagamentosClientes)
+    public function show($id)
     {
-        //
+        try {
+            $pgCli = PagamentosClientes::where('id', $id)
+                ->with('clientes')
+                ->get();
+            return response()->json(['pagamentos-clientes' => $pgCli], 200);
+        } catch (Exception $e) {
+            return response()->json(['erro' => $e->getMessage()], 400);
+        }
     }
 
     /**

@@ -65,9 +65,18 @@ class InvestimentosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Investimentos $investimentos)
+    public function show($id)
     {
-        //
+        try {
+            $investimentos = Investimentos::where('id', $id)
+                ->with('categoria_investimentos')
+                ->with('rendimentos')
+                ->get();
+
+            return response()->json(['investimentos' => $investimentos], 200);
+        } catch (Exception $e) {
+            return response()->json(['erro' => $e->getMessage()], 500);
+        }
     }
 
 

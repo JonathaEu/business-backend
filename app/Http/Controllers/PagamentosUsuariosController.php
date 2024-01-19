@@ -87,9 +87,17 @@ class PagamentosUsuariosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PagamentosUsuarios $pagamentosUsuarios)
+    public function show($id)
     {
-        //
+        try {
+            $pagamentosUsuarios = PagamentosUsuarios::where('id', $id)
+                ->with('pendencias')
+                ->get();
+
+            return response()->json(['meus-pagamentos' => $pagamentosUsuarios], 200);
+        } catch (Exception $e) {
+            return response()->json(['erro' => $e->getMessage()], 500);
+        }
     }
     /**
      * Update the specified resource in storage.

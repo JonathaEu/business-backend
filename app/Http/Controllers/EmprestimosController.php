@@ -138,9 +138,17 @@ class EmprestimosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Emprestimos $Emprestimos)
+    public function show($id)
     {
-        //
+        try {
+            $emprestimos = Emprestimos::where('id', $id)
+                ->with('clientes')
+                ->get();
+
+            return response()->json(['emprestimos' => $emprestimos], 200);
+        } catch (Exception $e) {
+            return response()->json(['erro' => $e->getMessage()], 500);
+        }
     }
 
     /**
